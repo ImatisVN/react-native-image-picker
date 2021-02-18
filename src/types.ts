@@ -19,6 +19,7 @@ export interface ImagePickerResponse {
   errorCode?: ErrorCode;
   errorMessage?: string;
   base64?: string;
+  data: any;
   uri?: string;
   width?: number;
   height?: number;

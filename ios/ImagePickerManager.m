@@ -129,6 +129,8 @@ RCT_EXPORT_METHOD(launchImageLibrary:(NSDictionary *)options callback:(RCTRespon
 
     if ([self.options[@"includeBase64"] boolValue]) {
         self.response[@"base64"] = [data base64EncodedStringWithOptions:0];
+    } else {
+        self.response[@"data"] = data;
     }
 
     NSURL *fileURL = [NSURL fileURLWithPath:path];

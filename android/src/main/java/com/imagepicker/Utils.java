@@ -136,6 +136,30 @@ public class Utils {
         return writePermission == PackageManager.PERMISSION_GRANTED ? true : false;
     }
 
+    static byte[] getByteArray(Uri uri, Context reactContext) {
+        InputStream inputStream;
+        try {
+            inputStream = reactContext.getContentResolver().openInputStream(uri);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        byte[] bytes;
+        byte[] buffer = new byte[8192];
+        int bytesRead;
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        try {
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                output.write(buffer, 0, bytesRead);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        bytes = output.toByteArray();
+        return bytes;
+    }
+
     static String getBase64String(Uri uri, Context reactContext) {
         InputStream inputStream;
         try {
@@ -327,8 +351,10 @@ public class Utils {
 
         if (options.includeBase64) {
             map.putString("base64", getBase64String(uri, context));
+        } else {
+            map.putString("data", getByteArray(uri, context));
         }
-        returnCursor.close();
+        returnCursor .close();
         return map;
     }
 
